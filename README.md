@@ -50,7 +50,7 @@ on damage:
 
 ### Is entity glowing for
 
-エンティティが光っているか確認します。
+プレイヤーに対してエンティティが光っているか確認します。
 
 ```applescript
 %entity% is glowing for %player%
