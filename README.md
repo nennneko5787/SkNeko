@@ -4,6 +4,12 @@ A Skript addon.
 
 ほぼ個人用です
 
+## Requirements
+- Paper (not Spigot) >= 1.21.11
+- Skript >= v2.15.0
+
+これ以外のバージョンでの動作は保証できません。自己責任でお願いします。
+
 ## Expressions
 
 ### Glow an entity
