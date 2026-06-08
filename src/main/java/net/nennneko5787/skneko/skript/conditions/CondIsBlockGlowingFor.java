@@ -8,9 +8,9 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import fr.skytasul.glowingentities.GlowingEntities;
+import fr.skytasul.glowingentities.GlowingBlocks;
 import net.nennneko5787.skneko.SkNeko;
-import org.bukkit.entity.Entity;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -19,33 +19,27 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Objects;
 
-@Name("is entity glowing for")
-@Description("Check is entity glowing for player.")
+@Name("is block glowing for")
+@Description("Check is block glowing for player.")
 @Since("0.0.1")
 @Example("""
-            command /checkglow <player> <player>:
-                trigger:
-                    if arg-1 is glowing for arg-2:
-                        send "%arg-1% is glowing for %arg-2%"
-        
-            on damage:
-                if attacker isn't glowing for victim:
-                    make attacker glowing with color red for victim
+            on right click:
+                if event-block is glowing for player:
+                    send "%event-block% is glowing for %player%" to player
                 else:
-                    make attacker unglowing for victim
+                    send "%event-block% isn't glowing for %player%" to player
         """)
-public class CondGlowing extends Condition {
+public class CondIsBlockGlowingFor extends Condition {
     private static final SkNeko plugin = SkNeko.getPlugin();
-    private Expression<Entity> entityExpr;
+    private Expression<Block> blockExpr;
     private Expression<Player> playerExpr;
 
     @SuppressWarnings("unchecked")
     private static Map<Player, ?> getPlayerMap() {
-        GlowingEntities glowingEntities = plugin.getGlowingEntities();
-        Field field =
-                null;
+        GlowingBlocks glowingBlocks = plugin.getGlowingBlocks();
+        Field field;
         try {
-            field = GlowingEntities.class.getDeclaredField("glowing");
+            field = GlowingBlocks.class.getDeclaredField("glowing");
         } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
@@ -53,7 +47,7 @@ public class CondGlowing extends Condition {
 
         Map<Player, ?> glowingMap;
         try {
-            glowingMap = (Map<Player, ?>) field.get(glowingEntities);
+            glowingMap = (Map<Player, ?>) field.get(glowingBlocks);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -63,10 +57,14 @@ public class CondGlowing extends Condition {
     @Override
     @SuppressWarnings("unchecked")
     public boolean check(Event event) {
-        Entity entity = entityExpr.getSingle(event);
+        Block block = blockExpr.getSingle(event);
         Player player = playerExpr.getSingle(event);
 
-        // 標準ではGlowingEntitiesからエンティティの状態を見ることはできないのでリフレクション
+        if (block == null || player == null) {
+            return false;
+        }
+
+        // 標準ではGlowingBlockからブロックの状態を見ることはできないのでリフレクション
         // こんなことして本当にいいのか... (^^;
         Map<Player, ?> glowingMap =
                 getPlayerMap();
@@ -89,7 +87,7 @@ public class CondGlowing extends Condition {
                             playerData);
 
             return glowingDatas.containsKey(
-                    Objects.requireNonNull(entity).getEntityId());
+                    Objects.requireNonNull(block).getLocation());
 
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
@@ -98,7 +96,7 @@ public class CondGlowing extends Condition {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "SkNeko-CondGlowing";
+        return "SkNeko-CondIsBlockGlowingFor";
     }
 
     @Override
@@ -107,8 +105,8 @@ public class CondGlowing extends Condition {
                         int matchedPattern, Kleenean isDelayed,
                         SkriptParser.ParseResult parseResult) {
         setNegated(matchedPattern == 2);
-        this.entityExpr = (Expression<Entity>) expressions[0];
-        this.playerExpr = (Expression<Player>) expressions[1];
+        blockExpr = (Expression<Block>) expressions[0];
+        playerExpr = (Expression<Player>) expressions[1];
         return true;
     }
 }

@@ -1,4 +1,4 @@
-package net.nennneko5787.skneko.skript.elements;
+package net.nennneko5787.skneko.skript.effects;
 
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Example;
@@ -9,7 +9,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import net.nennneko5787.skneko.SkNeko;
-import org.bukkit.entity.Entity;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -17,29 +17,32 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Name("unglow an entity")
-@Description("Unglow an entity for players.")
+@Name("unglow a block")
+@Description(
+        "Unglow a {{types|Block|block}} for {{types|Player|players}}.")
 @Since("0.0.1")
 @Example("""
-            command /unglow:
-                trigger:
-                    make player unglow for all players
-                    send "You are no longer glowing now" to player
-        
-            on damage:
-                make victim unglowing for attacker
+            on right click:
+                make event-block unglow for all players
+                send "The block is no longer glowing now" to player
         """)
-public class EffUnGlowEntity extends Effect {
+public class EffUnGlowBlock extends Effect {
     private static final SkNeko plugin = SkNeko.getPlugin();
-    private Expression<Entity> entityExpr;
+    private Expression<Block> blockExpr;
     private Expression<Player> playersExpr;
 
     @Override
     protected void execute(Event event) {
-        Entity entity = entityExpr.getSingle(event);
+        Block block = blockExpr.getSingle(event);
+        if (block == null) {
+            return;
+        }
 
         List<Player> players = new ArrayList<>();
         if (playersExpr.canBeSingle()) {
+            if (playersExpr.getSingle(event) == null) {
+                return;
+            }
             players.add(playersExpr.getSingle(event));
         } else {
             players.addAll(List.of(playersExpr.getArray(event)));
@@ -47,8 +50,8 @@ public class EffUnGlowEntity extends Effect {
 
         players.forEach(player -> {
             try {
-                plugin.getGlowingEntities()
-                        .unsetGlowing(entity, player);
+                plugin.getGlowingBlocks()
+                        .unsetGlowing(block, player);
             } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e);
             }
@@ -57,7 +60,7 @@ public class EffUnGlowEntity extends Effect {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "SkNeko-EffUnGlowEntity";
+        return "SkNeko-EffUnGlowBlock";
     }
 
     @Override
@@ -65,8 +68,8 @@ public class EffUnGlowEntity extends Effect {
     public boolean init(Expression<?>[] expressions,
                         int matchedPattern, Kleenean isDelayed,
                         SkriptParser.ParseResult parseResult) {
-        this.entityExpr = (Expression<Entity>) expressions[0];
-        this.playersExpr = (Expression<Player>) expressions[2];
+        blockExpr = (Expression<Block>) expressions[0];
+        playersExpr = (Expression<Player>) expressions[1];
         return true;
     }
 }

@@ -56,6 +56,8 @@ command /checkglow <player> <player>:
     trigger:
         if arg-1 is glowing for arg-2:
             send "%arg-1% is glowing for %arg-2%"
+        else:
+            send "%arg-1% isn't glowing for %arg-2%" to player
 
 on damage:
     if attacker isn't glowing for victim:

@@ -8,12 +8,14 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.skriptlang.org/releases")
+    maven("https://repo.viaversion.com")
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly("com.github.SkriptLang:Skript:2.15.0")
     implementation("fr.skytasul:glowingentities:1.4.11")
+    compileOnly("com.viaversion:viaversion-api:5.9.0")
 }
 
 java {
