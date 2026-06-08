@@ -100,6 +100,9 @@ on damage:
 
 ブロックを光らせます。色を付けることもできます。
 
+> [!note]
+> ブロックディスプレイを使用しないため一部のブロックで不自然な光り方をします。将来のアップデートで修正される予定です。
+
 ```applescript
 make %block% glow[ing] [[with color] %-color%] for %players%
 ```
