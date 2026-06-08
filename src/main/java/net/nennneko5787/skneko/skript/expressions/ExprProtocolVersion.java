@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
         "Returns the protocol version of {{types|Player|player}}.")
 @Examples("""
             on join:
-                send "you are playing minecraft %player's version% [%player's viaver protocol version%]" to player
+                send "you are playing minecraft %player's mc version% [%player's viaver protocol version%]" to player
         """)
 @Since("0.0.1")
 public class ExprProtocolVersion extends SimplePropertyExpression<Player, Integer> {
