@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
         "Returns the minecraft version of {{types|Player|player}}.")
 @Examples("""
             on join:
-                send "you are playing minecraft %player's version%" to player
+                send "you are playing minecraft %player's mc version%" to player
         """)
 @Since("0.0.1")
 public class ExprPlayerVersion extends SimplePropertyExpression<Player, String> {
