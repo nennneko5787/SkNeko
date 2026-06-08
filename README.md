@@ -141,7 +141,7 @@ on left click:
 
 ### Minecraft version
 
-> Requiremets: ViaVersion
+> Requirements: ViaVersion
 
 プレイヤーが遊んでいるバージョン。
 
@@ -157,7 +157,7 @@ on join:
 
 ### Protocol version
 
-> Requiremets: ViaVersion
+> Requirements: ViaVersion
 
 プレイヤーが遊んでいるゲームのプロトコルバージョン。
 
