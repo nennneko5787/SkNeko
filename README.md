@@ -10,7 +10,31 @@ A Skript addon.
 
 これ以外のバージョンでの動作は保証できません。自己責任でお願いします。
 
-## Expressions
+## Features
+- Glow an entity
+- Glow a block
+
+> [!important]
+> Glow系構文はプレイヤー/エンティティに既に設定されているチームと競合します。
+
+- ViaVersion
+- and more...
+
+## Syntaxes
+
+### Do nothing
+
+はい。文字通り、何もしません
+
+```applescript
+do nothing
+```
+
+```applescript
+command /notimplemented:
+    trigger:
+        do nothing # I will implement the command
+```
 
 ### Glow an entity
 
@@ -61,7 +85,7 @@ on damage:
 command /checkglow <player> <player>:
     trigger:
         if arg-1 is glowing for arg-2:
-            send "%arg-1% is glowing for %arg-2%"
+            send "%arg-1% is glowing for %arg-2%" to player
         else:
             send "%arg-1% isn't glowing for %arg-2%" to player
 
@@ -70,4 +94,47 @@ on damage:
         make attacker glowing with color red for victim
     else:
         make attacker unglowing for victim
+```
+
+### Glow a block
+
+ブロックを光らせます。色を付けることもできます。
+
+```applescript
+make %block% glow[ing] [[with color] %-color%] for %players%
+```
+
+```applescript
+on left click:
+    make event-block glow for all players
+```
+
+### Unglow a block
+
+ブロックの発光を停止します。
+
+```applescript
+make %block% unglow[ing] for %players%
+```
+
+```applescript
+on right click:
+    make event-block unglow for all players
+```
+
+### Is block glowing for
+
+プレイヤーに対してブロックが光っているか確認します。
+
+```applescript
+%block% is glowing for %player%
+%block% (isn't|is not) glowing for %player%
+```
+
+```applescript
+on left click:
+    if event-block is glowing for player:
+        send "The selected block is glowing for you" to player
+    else:
+        send "The selected block isn't glowing for you" to player
 ```
