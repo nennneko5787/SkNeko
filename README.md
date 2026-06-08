@@ -162,11 +162,11 @@ on join:
 プレイヤーが遊んでいるゲームのプロトコルバージョン。
 
 ```applescript
-[the] (vv|viaversion) [protocol] version of %player%
-%player%'s (vv|viaversion) [protcol] version
+[the] (viaver|vv) [protocol] version of %player%
+%player%'s (viaver|vv) [protcol] version
 ```
 
 ```applescript
 on join:
-    send "you are playing minecraft %player's mc version% [%player's vv protocol version%]" to player
+    send "you are playing minecraft %player's mc version% [%player's viaver protocol version%]" to player
 ```
