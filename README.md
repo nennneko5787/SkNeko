@@ -27,7 +27,7 @@ A Skript addon.
 はい。文字通り、何もしません
 
 ```applescript
-do nothing
+[do] nothing
 ```
 
 ```applescript
@@ -137,4 +137,36 @@ on left click:
         send "The selected block is glowing for you" to player
     else:
         send "The selected block isn't glowing for you" to player
+```
+
+### Minecraft version
+
+> Requiremets: ViaVersion
+
+プレイヤーが遊んでいるバージョン。
+
+```applescript
+[the] (mc|minecraft) version of %player%
+%player%'s (mc|minecraft) version
+```
+
+```applescript
+on join:
+    send "you are playing minecraft %player's mc version%" to player
+```
+
+### Protocol version
+
+> Requiremets: ViaVersion
+
+プレイヤーが遊んでいるゲームのプロトコルバージョン。
+
+```applescript
+[the] (vv|viaversion) [protocol] version of %player%
+%player%'s (vv|viaversion) [protcol] version
+```
+
+```applescript
+on join:
+    send "you are playing minecraft %player's mc version% [%player's vv protocol version%]" to player
 ```
